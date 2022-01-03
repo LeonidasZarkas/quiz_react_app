@@ -35,6 +35,7 @@ const BoardUser = () => {
       </header>
     </div>
   );
+
 };
 
 export default BoardUser;
