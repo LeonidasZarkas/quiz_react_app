@@ -25,7 +25,7 @@ const Home = () => {
     );
   }, []);
 
-  console.log(content);
+
   return(
     <Fragment>
       <Helmet><title>Quiz App - Home</title></Helmet>
@@ -46,7 +46,6 @@ const Home = () => {
           </div>
         </section>
       </div>
-      {/* <div>{JSON.stringify(content)}</div> */}
       
     </Fragment>
   )
