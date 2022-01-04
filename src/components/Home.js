@@ -46,7 +46,7 @@ const Home = () => {
           </div>
         </section>
       </div>
-      <div>{JSON.stringify(content)}</div>
+      {/* <div>{JSON.stringify(content)}</div> */}
       
     </Fragment>
   )
