@@ -4,6 +4,9 @@ import M from 'materialize-css';
 
 import questions from '../../questions.json';
 import isEmpty from '../../utils/is-empty';
+import correctAnswerSound from '../../assets/audio/Correct-Sound.mp3';
+import wrongAnswerSound from '../../assets/audio/Wrong-Sound.mp3';
+import buttonClickSound from '../../assets/audio/Button-Click-Sound.mp3';
 
 class Play extends React.Component {
     constructor(props) {
@@ -56,6 +59,7 @@ class Play extends React.Component {
                 currentQuestion,
                 nextQuestion,
                 previousQuestion,
+                numberOfQuestions: questions.length,
                 trueAnswer,
                 answers
             }) 
@@ -64,10 +68,20 @@ class Play extends React.Component {
 
     handleOptionClick = (e) => {
         if (e.target.innerHTML.toLowerCase() === this.state.trueAnswer.toLowerCase()) {
+                document.getElementById('correct-sound').play();
             this.correctAnswer();
         } else {
+                document.getElementById('wrong-sound').play();
             this.wrongAnswer();
         }
+    }
+
+    handleButtonClick = () => {
+        this.playButtonSound();
+    }
+
+    playButtonSound = () => {
+        document.getElementById('button-sound').play();
     }
 
     correctAnswer = () => {
@@ -103,13 +117,18 @@ class Play extends React.Component {
     }
 
     render () {
-        const { currentQuestion } = this.state;
+        const { currentQuestion, currentQuestionIndex, numberOfQuestions } = this.state;
         const { trueAnswer } = this.state;
         const { answers } = this.state;
         
         return (
             <Fragment>
                 <Helmet><title>Quiz Page</title></Helmet>
+                <Fragment>
+                    <audio id="correct-sound" src={correctAnswerSound}></audio>
+                    <audio id="wrong-sound" src={wrongAnswerSound}></audio>
+                    <audio id="button-sound" src={buttonClickSound}></audio>
+                </Fragment>
                 <div className='questions'>
                     <h2>Quiz Mode</h2>
                     <div className='lifeline-container'>
@@ -122,7 +141,7 @@ class Play extends React.Component {
                     </div>
                     <div className='timer-container'>
                         <p>
-                            <span className='left'>1 of 15</span>
+                            <span className='left'>{currentQuestionIndex + 1} of {numberOfQuestions}</span>
                             <span className='right'>2:15<span className='mdi mdi-clock-outline mdi-24px'></span></span>
                         </p>
                     </div>
@@ -137,9 +156,9 @@ class Play extends React.Component {
                     </div>
 
                     <div className='button-container'>
-                        <button>Previous</button>
-                        <button>Next</button>
-                        <button>Quit</button>
+                        <button onClick={this.handleButtonClick}>Previous</button>
+                        <button onClick={this.handleButtonClick}>Next</button>
+                        <button onClick={this.handleButtonClick}>Quit</button>
                     </div>
                 </div>
             </Fragment>
