@@ -26,8 +26,6 @@ class Play extends React.Component {
             wrongAnswers: 0,
             hints: 1,
             fiftyFifty: 1,
-            usedFiftyFifty: false,
-            usedHints: false,
             previousRandomNumbers: [],
             time: {}
         }
@@ -200,6 +198,48 @@ class Play extends React.Component {
         
     }
 
+    handleFiftyFifty = () => {
+        if(this.state.fiftyFifty > 0) {
+            const options = document.querySelectorAll('.option');
+            const randomNumbers = [];
+            let indexOfAnswer;
+
+            options.forEach((option, index) => {
+                if(option.innerHTML.toLowerCase() === this.state.trueAnswer.toLowerCase()) {
+                    indexOfAnswer = index;
+                }
+            });
+
+            let count = 0;
+            do {
+                const randomNumber = Math.round(Math.random() * 3);
+                if(randomNumber !== indexOfAnswer) {
+                    if(randomNumbers.length < 2 && !randomNumbers.includes(randomNumber) && !randomNumbers.includes(indexOfAnswer)) {
+                        randomNumbers.push(randomNumber);
+                        count++;
+                    } else {
+                        while (true) {
+                            const newRandomNumber = Math.round(Math.random() * 3);
+                            if(newRandomNumber !== indexOfAnswer && !randomNumbers.includes(newRandomNumber) && !randomNumbers.includes(indexOfAnswer)) {
+                                randomNumbers.push(newRandomNumber);
+                                count++;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } while (count < 2);
+            options.forEach((option, index) => {
+                if(randomNumbers.includes(index)) {
+                    option.style.visibility = 'hidden';
+                }
+            });
+            this.setState(prevState => ({
+                fiftyFifty: prevState.fiftyFifty - 1
+            }));
+        }
+    }
+
     render () {
         const { currentQuestion, currentQuestionIndex, numberOfQuestions, answers, hints, fiftyFifty } = this.state;
         
@@ -215,8 +255,8 @@ class Play extends React.Component {
                     <h2>Quiz Mode</h2>
                     <div className='lifeline-container'>
                         <p>
-                            <span className='mdi mdi-set-center mdi-24px lifeline-icon'></span>
-                            <span onClick={this.handleFiftyFifty} className='lifeline'>{fiftyFifty}</span>
+                            <span onClick={this.handleFiftyFifty} className='mdi mdi-set-center mdi-24px lifeline-icon'></span>
+                            <span className='lifeline'>{fiftyFifty}</span>
                         </p>
                         <p>
                             <span onClick={this.handleHints} className='mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon'></span>
