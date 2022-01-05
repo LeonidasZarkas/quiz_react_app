@@ -28,6 +28,7 @@ class Play extends React.Component {
             fiftyFifty: 1,
             usedFiftyFifty: false,
             usedHints: false,
+            previousRandomNumbers: [],
             time: {}
         }
     }
@@ -61,8 +62,11 @@ class Play extends React.Component {
                 previousQuestion,
                 numberOfQuestions: questions.length,
                 trueAnswer,
-                answers
-            }) 
+                answers,
+                previousRandomNumbers: []
+            }, () => {
+                this.showOptions();
+            }); 
         }
     };
 
@@ -157,8 +161,47 @@ class Play extends React.Component {
         });
     }
 
+    showOptions = () => {
+        const options = Array.from(document.querySelectorAll('.option'));
+
+        options.forEach(option => {
+            option.style.visibility = 'visible';
+        });
+    }
+
+    handleHints = () => {
+        if(this.state.hints > 0) {
+            const options = Array.from(document.querySelectorAll('.option'));
+            let indexOfAnswer;
+    
+            options.forEach((option, index) => {
+                if(option.innerHTML.toLowerCase() === this.state.trueAnswer.toLowerCase()) {
+                    indexOfAnswer = index;
+                }
+            });
+    
+            while (true) {
+                const randomNumber = Math.round(Math.random() * 3);
+                if(randomNumber !== indexOfAnswer && !this.state.previousRandomNumbers.includes(randomNumber)) {
+                    options.forEach((option, index) => {
+                        if(index === randomNumber) {
+                            option.style.visibility = 'hidden';
+                            this.setState((prevState) => ({
+                                hints: prevState.hints - 1,
+                                previousRandomNumbers: prevState.previousRandomNumbers.concat(randomNumber)
+                            }));
+                        }
+                    });
+                    break;
+                }
+                if(this.state.previousRandomNumbers.length >= 3) break;
+            }
+        }
+        
+    }
+
     render () {
-        const { currentQuestion, currentQuestionIndex, numberOfQuestions, answers } = this.state;
+        const { currentQuestion, currentQuestionIndex, numberOfQuestions, answers, hints, fiftyFifty } = this.state;
         
         return (
             <Fragment>
@@ -172,10 +215,12 @@ class Play extends React.Component {
                     <h2>Quiz Mode</h2>
                     <div className='lifeline-container'>
                         <p>
-                            <span className='mdi mdi-set-center mdi-24px lifeline-icon'></span><span className='lifeline'>1</span>
+                            <span className='mdi mdi-set-center mdi-24px lifeline-icon'></span>
+                            <span onClick={this.handleFiftyFifty} className='lifeline'>{fiftyFifty}</span>
                         </p>
                         <p>
-                            <span className='mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon'></span><span className='lifeline'>1</span>
+                            <span onClick={this.handleHints} className='mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon'></span>
+                            <span className='lifeline'>{hints}</span>
                         </p>
                     </div>
                     <div className='timer-container'>
