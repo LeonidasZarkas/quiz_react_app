@@ -3,6 +3,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
+
+import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 const required = (value) => {
@@ -74,8 +76,11 @@ const Login = (props) => {
           className="profile-img-card"
         /> */}
 
-        <Form onSubmit={handleLogin} ref={form}>
+      <Form onSubmit={handleLogin} ref={form}>
+        <div id="info">
           <div className="form">
+            <p>LOGIN</p>
+            <br /><br />
             <label htmlFor="username">Username</label>
             <Input
               type="text"
@@ -86,7 +91,7 @@ const Login = (props) => {
               validations={[required]}
             />
           </div>
-          
+
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <Input
@@ -98,7 +103,7 @@ const Login = (props) => {
               validations={[required]}
             />
           </div>
-          
+
 
           <div className="form-group">
             <button className="btn btn-primary btn-block" disabled={loading}>
@@ -107,6 +112,10 @@ const Login = (props) => {
               )}
               <span>Login</span>
             </button>
+
+            <div id="lobby_btn">
+              <Link to={"/home"} className="auth-buttons" id="login-button">Back</Link>
+            </div>
           </div>
 
           {message && (
@@ -117,9 +126,10 @@ const Login = (props) => {
             </div>
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
+        </div>
+      </Form>
       {/* </div> */}
-  </div>
+    </div>
   );
 };
 
