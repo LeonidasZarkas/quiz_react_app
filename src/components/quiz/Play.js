@@ -28,12 +28,21 @@ class Play extends React.Component {
             fiftyFifty: 1,
             previousRandomNumbers: [],
             time: {}
-        }
+        };
+        this.interval = null;
+        this.correctSound = React.createRef();
+        this.wrongSound = React.createRef();
+        this.buttonSound = React.createRef();
     }
 
     componentDidMount() {
         const { questions, currentQuestion, nextQuestion, previousQuestion} = this.state;
         this.displayQuestions(questions, currentQuestion, nextQuestion, previousQuestion);
+        this.startTimer();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     displayQuestions = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
@@ -49,8 +58,16 @@ class Play extends React.Component {
             for(let i = 0; i < currentQuestion.answerSet.length; i++) {
                 let checkAnswer = currentQuestion.answerSet[i].isright;
                 answers[i] = currentQuestion.answerSet[i].answer;
+
                 if(checkAnswer) {
                     trueAnswer = currentQuestion.answerSet[i].answer;
+                }
+
+                // If answer with the biggest id is found in the beginning of the array, it is removed and added to the end of the array.
+                // So that the answers will be ordered by their ids and have "true" and "false" answers at the right places.
+                if(i == (currentQuestion.answerSet.length - 1) && currentQuestion.answerSet[i].answerid < currentQuestion.answerSet[0].answerid) {
+                    answers.shift();
+                    answers.push(currentQuestion.answerSet[0].answer);
                 }
             }
 
@@ -70,10 +87,10 @@ class Play extends React.Component {
 
     handleOptionClick = (e) => {
         if (e.target.innerHTML.toLowerCase() === this.state.trueAnswer.toLowerCase()) {
-                document.getElementById('correct-sound').play();
+                this.correctSound.current.play();
             this.correctAnswer();
         } else {
-                document.getElementById('wrong-sound').play();
+            this.wrongSound.current.play();
             this.wrongAnswer();
         }
     }
@@ -124,7 +141,7 @@ class Play extends React.Component {
     }
 
     playButtonSound = () => {
-        document.getElementById('button-sound').play();
+        this.buttonSound.current.play();
     }
 
     correctAnswer = () => {
@@ -240,16 +257,71 @@ class Play extends React.Component {
         }
     }
 
+    startTimer = () => {
+        const countDownTime = Date.now() + 90000;
+        this.interval = setInterval(() => {
+            const now = new Date();
+            const distance = countDownTime - now;
+
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / (1000));
+
+            if (distance < 0) {
+                clearInterval(this.interval);
+                this.setState({
+                    time: {
+                        minutes: 0,
+                        seconds: 0
+                    }
+                }, () => {
+                    this.endGame();
+                });
+            } else {
+                this.setState({
+                    time: {
+                        minutes,
+                        seconds
+                    }
+                });
+            }
+        }, 1000);
+    }
+
+    endGame = () => {
+        alert('Quiz has ended!');
+        const { state } = this;
+        const playerStats = {
+            score: state.score,
+            numberOfQuestions: state.numberOfQuestions,
+            numberOfAnsweredQuestions: state.numberOfAnsweredQuestions,
+            correctAnswers: state.correctAnswers,
+            wrongAnswers: state.wrongAnswers,
+            fiftyFiftyUsed: 1 - state.fiftyFifty,
+            hintsUsed: 1 - state.hints
+        };
+        setTimeout(() => {
+            this.props.history.push('/play/quizSummary', playerStats);
+        }, 1000);
+    }
+
     render () {
-        const { currentQuestion, currentQuestionIndex, numberOfQuestions, answers, hints, fiftyFifty } = this.state;
+        const { 
+            currentQuestion,
+            currentQuestionIndex,
+            numberOfQuestions,
+            answers,
+            hints,
+            fiftyFifty,
+            time
+        } = this.state;
         
         return (
             <Fragment>
                 <Helmet><title>Quiz Page</title></Helmet>
                 <Fragment>
-                    <audio id="correct-sound" src={correctAnswerSound}></audio>
-                    <audio id="wrong-sound" src={wrongAnswerSound}></audio>
-                    <audio id="button-sound" src={buttonClickSound}></audio>
+                    <audio ref={this.correctSound} src={correctAnswerSound}></audio>
+                    <audio ref={this.wrongSound} src={wrongAnswerSound}></audio>
+                    <audio ref={this.buttonSound} src={buttonClickSound}></audio>
                 </Fragment>
                 <div className='questions'>
                     <h2>Quiz Mode</h2>
@@ -259,14 +331,14 @@ class Play extends React.Component {
                             <span className='lifeline'>{fiftyFifty}</span>
                         </p>
                         <p>
-                            <span onClick={this.handleHints} className='mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon'></span>
+                            <span onClick={this.handleHints} className='mdi mdi-lightbulb-on mdi-24px lifeline-icon'></span>
                             <span className='lifeline'>{hints}</span>
                         </p>
                     </div>
                     <div className='timer-container'>
                         <p>
                             <span className='left'>{currentQuestionIndex + 1} of {numberOfQuestions}</span>
-                            <span className='right'>2:15<span className='mdi mdi-clock-outline mdi-24px'></span></span>
+                            <span className='right'>{time.minutes}:{time.seconds}<span className='mdi mdi-clock-outline mdi-24px'></span></span>
                         </p>
                     </div>
                     <h5>{currentQuestion.questions}</h5>
