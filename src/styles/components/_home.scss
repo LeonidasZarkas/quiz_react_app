@@ -1,5 +1,5 @@
 #home {
-    background-image: url('../../assets/img/home-page-background_4.png');
+    background-image: url('../../assets/img/home-page-background.jpg');
     background-size: cover;
     background-position: 0%;
     display: flex;
@@ -22,10 +22,13 @@
     }
 
     h1 {
+
         font-size: $lg;
         font-weight: 400;
         text-align: center;
         color: $off-white;
+
+        
     }
 
     .play-button-container {

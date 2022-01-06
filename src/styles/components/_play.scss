@@ -1,5 +1,5 @@
-body{
-    background-image: url('../../assets/img/home-page-background_4.png');
+#play{
+    background-image: url('../../assets/img/home-page-background_blur.png');
     background-size: cover;
     background-position: 0%;
     display: flex;
@@ -9,14 +9,16 @@ body{
 }
 
 .questions {
-    background-image: url('../../assets/img/home-page-background_4.png');
-    border-left: 3px solid blue;
-    border-top: 3px solid red;
-    border-right: 3px solid green;
-    border-bottom: 3px solid palevioletred;
+    // background-image: url('../../assets/img/home-page-background_4.png');
+    // border-left: 3px solid blue;
+    // border-top: 3px solid red;
+    // border-right: 3px solid green;
+    // border-bottom: 3px solid palevioletred;
     width: 25cm;
+    // height: 15cm;
     margin: $lg auto 0 auto;
     padding: $sm $md;
+
 
     h2 {
         text-align: center;
