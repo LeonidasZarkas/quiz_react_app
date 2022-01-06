@@ -259,7 +259,7 @@ class Play extends React.Component {
     }
 
     startTimer = () => {
-        const countDownTime = Date.now() + 15000;
+        const countDownTime = Date.now() + 50000;
         this.interval = setInterval(() => {
             const now = new Date();
             const distance = countDownTime - now;
