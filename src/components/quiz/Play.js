@@ -156,6 +156,7 @@ class Play extends React.Component {
             currentQuestionIndex: prevState.currentQuestionIndex + 1,
             numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1
         }), () => {
+
             this.displayQuestions(this.state.questions, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
         });
     }

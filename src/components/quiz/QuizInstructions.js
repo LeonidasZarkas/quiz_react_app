@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 
 import options from '../../assets/img/instructions_options.png';
+import answer from '../../assets/img/instructions_answer.png';
+import fifty from '../../assets/img/instructions_50-50.png';
+import hint from '../../assets/img/instructions_hint.png'
 
 const QuizInstructions = () => (
     <Fragment>
@@ -15,11 +18,11 @@ const QuizInstructions = () => (
                 <li>Each game consists of 15 questions.</li>
                 <li>
                     Every question contains 4 options.
-                    <img src={'../../assets/img/instructions_options.png'} alt="Quiz App options example"/>
+                    <img src={options} alt="Quiz App options example"/>
                 </li>
                 <li>
                     Select the option which best answers the question by clicking (or selecting) it.
-                    <img src={'../../assets/img/instructions_answer.png'} alt="Quiz App answer example"/>
+                    <img src={answer} alt="Quiz App answer example"/>
                 </li>
                 <li>
                     Each game has 2 lifelines namely:
@@ -32,13 +35,15 @@ const QuizInstructions = () => (
                     Selecting a 50-50 lifeline by clicking the icon
                     <span className='mdi mdi-set-center mdi-24px lifeline-icon'></span>
                     will remove 2 wrong answers, leaving the correct answer and one wrong answer
-                    <img src={'../../assets/img/instructions_50-50.png'} alt="Quiz App Fifty-Fifty example"/>
+                    <br/>
+                    <img src={fifty} alt="Quiz App Fifty-Fifty example"/>
                 </li>
                 <li>
                     Using a hint by clickingthe icon
                     <span className='mdi mdi-lightbulb-on mdi-24px lifeline-icon'></span>
                     will remove one wrong answer leaving two wrong answers and one correct answer.
-                    <img src={'../../assets/img/instructions_hint.png'} alt="Quiz App hint example"/>
+                    <br/>
+                    <img src={hint} alt="Quiz App hint example"/>
                 </li>
                 <li>Feel free to quit (or retire from) the game at any time. In that case your score will be revealed afterwards</li>
                 <li>The timer starts as soon as the game loads</li>
