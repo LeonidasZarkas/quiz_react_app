@@ -10,6 +10,7 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import QuizInstructions from "./components/quiz/QuizInstructions";
 import Play from "./components/quiz/Play";
+import QuizSummary from "./components/quiz/QuizSummary";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardAdmin from "./components/BoardAdmin";
@@ -36,6 +37,7 @@ const App = () => {
       <Route exact path={["/", "/home"]} component={Home} />
       <Route exact path="/play/instructions" component={QuizInstructions} />
       <Route exact path="/play/quiz" component={Play} />
+      <Route exact path="/play/quizSummary" component={QuizSummary} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/profile" component={Profile} />

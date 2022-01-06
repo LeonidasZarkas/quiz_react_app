@@ -36,6 +36,16 @@ body{
         
     }
 
+    .lifeline-icon {
+        color: green;
+        cursor: pointer;
+    }
+    
+    .lifeline-icon:hover {
+        background: none;
+        color: darken(orange, 10%);
+    }
+
     .lifeline {
         position: relative;
         top: -3px;
@@ -145,3 +155,4 @@ body{
 .button-container button:last-child:hover {
     background-color: darken(red, 20%);
 }
+

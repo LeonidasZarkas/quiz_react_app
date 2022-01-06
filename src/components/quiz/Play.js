@@ -26,15 +26,23 @@ class Play extends React.Component {
             wrongAnswers: 0,
             hints: 1,
             fiftyFifty: 1,
-            usedFiftyFifty: false,
-            usedHints: false,
+            previousRandomNumbers: [],
             time: {}
-        }
+        };
+        this.interval = null;
+        this.correctSound = React.createRef();
+        this.wrongSound = React.createRef();
+        this.buttonSound = React.createRef();
     }
 
     componentDidMount() {
         const { questions, currentQuestion, nextQuestion, previousQuestion} = this.state;
         this.displayQuestions(questions, currentQuestion, nextQuestion, previousQuestion);
+        this.startTimer();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     displayQuestions = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
@@ -50,8 +58,16 @@ class Play extends React.Component {
             for(let i = 0; i < currentQuestion.answerSet.length; i++) {
                 let checkAnswer = currentQuestion.answerSet[i].isright;
                 answers[i] = currentQuestion.answerSet[i].answer;
+
                 if(checkAnswer) {
                     trueAnswer = currentQuestion.answerSet[i].answer;
+                }
+
+                // If answer with the biggest id is found in the beginning of the array, it is removed and added to the end of the array.
+                // So that the answers will be ordered by their ids and have "true" and "false" answers at the right places.
+                if(i == (currentQuestion.answerSet.length - 1) && currentQuestion.answerSet[i].answerid < currentQuestion.answerSet[0].answerid) {
+                    answers.shift();
+                    answers.push(currentQuestion.answerSet[0].answer);
                 }
             }
 
@@ -61,27 +77,71 @@ class Play extends React.Component {
                 previousQuestion,
                 numberOfQuestions: questions.length,
                 trueAnswer,
-                answers
-            }) 
+                answers,
+                previousRandomNumbers: []
+            }, () => {
+                this.showOptions();
+            }); 
         }
     };
 
     handleOptionClick = (e) => {
         if (e.target.innerHTML.toLowerCase() === this.state.trueAnswer.toLowerCase()) {
-                document.getElementById('correct-sound').play();
+                this.correctSound.current.play();
             this.correctAnswer();
         } else {
-                document.getElementById('wrong-sound').play();
+            this.wrongSound.current.play();
             this.wrongAnswer();
         }
     }
 
-    handleButtonClick = () => {
+    handleNextButtonClick = () => {
         this.playButtonSound();
+        if(this.state.nextQuestion !== undefined) {
+            this.setState(prevState => ({
+                currentQuestionIndex: prevState.currentQuestionIndex + 1
+            }), () => {
+                this.displayQuestions(this.state.state, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
+            });
+        }
+    };
+    
+    handlePreviousButtonClick = () => {
+        this.playButtonSound();
+        if(this.state.previousQuestion !== undefined) {
+            this.setState(prevState => ({
+                currentQuestionIndex: prevState.currentQuestionIndex - 1
+            }), () => {
+                this.displayQuestions(this.state.state, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
+            });
+        }
+    };
+
+    handleQuitButtonClick = () => {
+        this.playButtonSound();
+        if(window.confirm('Are you sure you want to quit?')) {
+            this.props.history.push('/');
+        }
+    };
+
+    handleButtonClick = (e) => {
+        switch(e.target.id) {
+            case 'next-button':
+                this.handleNextButtonClick();
+                break;
+            case 'previous-button':
+                this.handlePreviousButtonClick();
+                break;
+            case 'quit-button':
+                this.handleQuitButtonClick();
+                break;
+            default:
+                break;
+        }
     }
 
     playButtonSound = () => {
-        document.getElementById('button-sound').play();
+        this.buttonSound.current.play();
     }
 
     correctAnswer = () => {
@@ -116,33 +176,169 @@ class Play extends React.Component {
         });
     }
 
+    showOptions = () => {
+        const options = Array.from(document.querySelectorAll('.option'));
+
+        options.forEach(option => {
+            option.style.visibility = 'visible';
+        });
+    }
+
+    handleHints = () => {
+        if(this.state.hints > 0) {
+            const options = Array.from(document.querySelectorAll('.option'));
+            let indexOfAnswer;
+    
+            options.forEach((option, index) => {
+                if(option.innerHTML.toLowerCase() === this.state.trueAnswer.toLowerCase()) {
+                    indexOfAnswer = index;
+                }
+            });
+    
+            while (true) {
+                const randomNumber = Math.round(Math.random() * 3);
+                if(randomNumber !== indexOfAnswer && !this.state.previousRandomNumbers.includes(randomNumber)) {
+                    options.forEach((option, index) => {
+                        if(index === randomNumber) {
+                            option.style.visibility = 'hidden';
+                            this.setState((prevState) => ({
+                                hints: prevState.hints - 1,
+                                previousRandomNumbers: prevState.previousRandomNumbers.concat(randomNumber)
+                            }));
+                        }
+                    });
+                    break;
+                }
+                if(this.state.previousRandomNumbers.length >= 3) break;
+            }
+        }
+        
+    }
+
+    handleFiftyFifty = () => {
+        if(this.state.fiftyFifty > 0) {
+            const options = document.querySelectorAll('.option');
+            const randomNumbers = [];
+            let indexOfAnswer;
+
+            options.forEach((option, index) => {
+                if(option.innerHTML.toLowerCase() === this.state.trueAnswer.toLowerCase()) {
+                    indexOfAnswer = index;
+                }
+            });
+
+            let count = 0;
+            do {
+                const randomNumber = Math.round(Math.random() * 3);
+                if(randomNumber !== indexOfAnswer) {
+                    if(randomNumbers.length < 2 && !randomNumbers.includes(randomNumber) && !randomNumbers.includes(indexOfAnswer)) {
+                        randomNumbers.push(randomNumber);
+                        count++;
+                    } else {
+                        while (true) {
+                            const newRandomNumber = Math.round(Math.random() * 3);
+                            if(newRandomNumber !== indexOfAnswer && !randomNumbers.includes(newRandomNumber) && !randomNumbers.includes(indexOfAnswer)) {
+                                randomNumbers.push(newRandomNumber);
+                                count++;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } while (count < 2);
+            options.forEach((option, index) => {
+                if(randomNumbers.includes(index)) {
+                    option.style.visibility = 'hidden';
+                }
+            });
+            this.setState(prevState => ({
+                fiftyFifty: prevState.fiftyFifty - 1
+            }));
+        }
+    }
+
+    startTimer = () => {
+        const countDownTime = Date.now() + 90000;
+        this.interval = setInterval(() => {
+            const now = new Date();
+            const distance = countDownTime - now;
+
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / (1000));
+
+            if (distance < 0) {
+                clearInterval(this.interval);
+                this.setState({
+                    time: {
+                        minutes: 0,
+                        seconds: 0
+                    }
+                }, () => {
+                    this.endGame();
+                });
+            } else {
+                this.setState({
+                    time: {
+                        minutes,
+                        seconds
+                    }
+                });
+            }
+        }, 1000);
+    }
+
+    endGame = () => {
+        alert('Quiz has ended!');
+        const { state } = this;
+        const playerStats = {
+            score: state.score,
+            numberOfQuestions: state.numberOfQuestions,
+            numberOfAnsweredQuestions: state.numberOfAnsweredQuestions,
+            correctAnswers: state.correctAnswers,
+            wrongAnswers: state.wrongAnswers,
+            fiftyFiftyUsed: 1 - state.fiftyFifty,
+            hintsUsed: 1 - state.hints
+        };
+        setTimeout(() => {
+            this.props.history.push('/play/quizSummary', playerStats);
+        }, 1000);
+    }
+
     render () {
-        const { currentQuestion, currentQuestionIndex, numberOfQuestions } = this.state;
-        const { trueAnswer } = this.state;
-        const { answers } = this.state;
+        const { 
+            currentQuestion,
+            currentQuestionIndex,
+            numberOfQuestions,
+            answers,
+            hints,
+            fiftyFifty,
+            time
+        } = this.state;
         
         return (
             <Fragment>
                 <Helmet><title>Quiz Page</title></Helmet>
                 <Fragment>
-                    <audio id="correct-sound" src={correctAnswerSound}></audio>
-                    <audio id="wrong-sound" src={wrongAnswerSound}></audio>
-                    <audio id="button-sound" src={buttonClickSound}></audio>
+                    <audio ref={this.correctSound} src={correctAnswerSound}></audio>
+                    <audio ref={this.wrongSound} src={wrongAnswerSound}></audio>
+                    <audio ref={this.buttonSound} src={buttonClickSound}></audio>
                 </Fragment>
                 <div className='questions'>
                     <h2>LET'S PLAY !</h2>
                     <div className='lifeline-container'>
                         <p>
-                            <span className='mdi mdi-set-center mdi-24px lifeline-icon'></span><span className='lifeline'>2</span>
+                            <span onClick={this.handleFiftyFifty} className='mdi mdi-set-center mdi-24px lifeline-icon'></span>
+                            <span className='lifeline'>{fiftyFifty}</span>
                         </p>
                         <p>
-                            <span className='mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon'></span><span className='lifeline'>5</span>
+                            <span onClick={this.handleHints} className='mdi mdi-lightbulb-on mdi-24px lifeline-icon'></span>
+                            <span className='lifeline'>{hints}</span>
                         </p>
                     </div>
                     <div className='timer-container'>
                         <p>
                             <span className='left'>{currentQuestionIndex + 1} of {numberOfQuestions}</span>
-                            <span className='right'>2:15<span className='mdi mdi-clock-outline mdi-24px'></span></span>
+                            <span className='right'>{time.minutes}:{time.seconds}<span className='mdi mdi-clock-outline mdi-24px'></span></span>
                         </p>
                     </div>
                     <h5>{currentQuestion.questions}</h5>
@@ -156,9 +352,9 @@ class Play extends React.Component {
                     </div>
 
                     <div className='button-container'>
-                        <button onClick={this.handleButtonClick}>Previous</button>
-                        <button onClick={this.handleButtonClick}>Next</button>
-                        <button onClick={this.handleButtonClick}>Quit</button>
+                        <button id="previous-button" onClick={this.handleButtonClick}>Previous</button>
+                        <button id="next-button" onClick={this.handleButtonClick}>Next</button>
+                        <button id="quit-button" onClick={this.handleButtonClick}>Quit</button>
                     </div>
                 </div>
             </Fragment>
