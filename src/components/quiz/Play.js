@@ -130,13 +130,13 @@ class Play extends React.Component {
                     <audio id="button-sound" src={buttonClickSound}></audio>
                 </Fragment>
                 <div className='questions'>
-                    <h2>Quiz Mode</h2>
+                    <h2>LET'S PLAY !</h2>
                     <div className='lifeline-container'>
                         <p>
-                            <span className='mdi mdi-set-center mdi-24px lifeline-icon'></span><span className='lifeline'>1</span>
+                            <span className='mdi mdi-set-center mdi-24px lifeline-icon'></span><span className='lifeline'>2</span>
                         </p>
                         <p>
-                            <span className='mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon'></span><span className='lifeline'>1</span>
+                            <span className='mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon'></span><span className='lifeline'>5</span>
                         </p>
                     </div>
                     <div className='timer-container'>
