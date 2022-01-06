@@ -66,16 +66,16 @@ const Login = (props) => {
   };
 
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
+    <div id="login">
+      {/* <div className="card_card-container">
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
-        />
+        /> */}
 
         <Form onSubmit={handleLogin} ref={form}>
-          <div className="form-group">
+          <div className="form">
             <label htmlFor="username">Username</label>
             <Input
               type="text"
@@ -86,7 +86,7 @@ const Login = (props) => {
               validations={[required]}
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <Input
@@ -98,6 +98,7 @@ const Login = (props) => {
               validations={[required]}
             />
           </div>
+          
 
           <div className="form-group">
             <button className="btn btn-primary btn-block" disabled={loading}>
@@ -117,8 +118,8 @@ const Login = (props) => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
-      </div>
-    </div>
+      {/* </div> */}
+  </div>
   );
 };
 

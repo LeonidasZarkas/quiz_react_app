@@ -1,0 +1,37 @@
+#profile_page{
+    background-image: url('../../assets/img/login_and_register_background.png');
+    background-size: cover;
+    background-position: 0%;
+    display: flex;
+    justify-content: space-around;
+    height: 100vh;
+    width: 100vw;
+}
+
+#play-button {
+    background-color: maroon;
+}
+
+#play-button:hover {
+    background-color: darken(maroon, 10%);
+    box-shadow: $shadow;
+}
+
+#logout-button {
+    background-color: rgb(48, 117, 185);
+}
+
+#logout-button:hover {
+    background-color: darken(rgb(48, 117, 185), 10%);
+    box-shadow: $shadow;
+}
+
+.buttons {
+    color: white;
+    cursor: pointer;
+    border-radius: $button-radius;
+    padding: 1mm;
+    text-align: center;
+    transition: 0.3% linear all;
+    width: 45%;
+}

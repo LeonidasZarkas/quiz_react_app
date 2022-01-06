@@ -1,14 +1,21 @@
+
 .instructions {
-    border: 1px solid darken($off-white, 10%);
+    border: 4px solid darken($off-white, 10%);
     border-radius: 5px;
     margin-top: $lg;
     margin-bottom: $lg;
     padding: $sm $lg;
+    background-color: rgb(247, 204, 188);
 
     h1 {
-        color: $off-black;
-        font-size: $md;
-        text-align: center;   
+        font-style: italic;
+        text-decoration: rgb(255, 179, 179);
+        text-decoration: underline;
+        font-size: 1.65rem;
+        font-weight: 1000;
+        margin-bottom: $lg;
+        line-height: 1.5;
+        text-align: center;
     }
 
     .lifeline {
@@ -17,7 +24,7 @@
     }
 
     .lifeline-icon {
-        color: green;
+        color: rgb(0, 218, 0);
         cursor: pointer;
     }
 
@@ -31,7 +38,12 @@
         width: 80%;
         height: 50%;
     }
+
+    #bottom_buttons{
+        background-color: cornsilk;
+    }
 }
+
 
 @media (max-width: $md-breakpoint) {
     .instructions img {

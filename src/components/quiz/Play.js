@@ -324,7 +324,7 @@ class Play extends React.Component {
                     <audio ref={this.buttonSound} src={buttonClickSound}></audio>
                 </Fragment>
                 <div className='questions'>
-                    <h2>Quiz Mode</h2>
+                    <h2>LET'S PLAY !</h2>
                     <div className='lifeline-container'>
                         <p>
                             <span onClick={this.handleFiftyFifty} className='mdi mdi-set-center mdi-24px lifeline-icon'></span>

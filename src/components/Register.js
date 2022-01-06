@@ -4,6 +4,9 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
+import { Link } from "react-router-dom";
+
+
 import AuthService from "../services/auth.service";
 
 const required = (value) => {
@@ -101,13 +104,13 @@ const Register = (props) => {
   };
 
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
+    <div id="register">
+      {/* <div className="card_card-container">
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
-        />
+        /> */}
 
         <Form onSubmit={handleRegister} ref={form}>
           {!successful && (
@@ -162,11 +165,19 @@ const Register = (props) => {
               >
                 {message}
               </div>
+
+
+              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        <Link to={"/play/instructions"} className="buttons" id="play-button">Play</Link> <Link to={"/home"} className="buttons" id="logout-button">Log Out</Link>
+        <br/><br/>
+
+
+
             </div>
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
-      </div>
+      {/* </div> */}
     </div>
   );
 };
