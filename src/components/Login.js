@@ -69,13 +69,6 @@ const Login = (props) => {
 
   return (
     <div id="login">
-      {/* <div className="card_card-container">
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        /> */}
-
       <Form onSubmit={handleLogin} ref={form}>
         <div id="info">
           <div className="form">
@@ -104,7 +97,6 @@ const Login = (props) => {
             />
           </div>
 
-
           <div className="form-group">
             <button className="btn btn-primary btn-block" disabled={loading}>
               {loading && (
@@ -128,7 +120,6 @@ const Login = (props) => {
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </div>
       </Form>
-      {/* </div> */}
     </div>
   );
 };

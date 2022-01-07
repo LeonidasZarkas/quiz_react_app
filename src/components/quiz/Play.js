@@ -14,8 +14,6 @@ class Play extends React.Component {
         this.state = {
             questions,
             currentQuestion: {},
-            nextQuestion: {},
-            previousQuestion: {},
             trueAnswer: '',
             answers: [],
             questionsAnsweredIndex: [],
@@ -37,8 +35,8 @@ class Play extends React.Component {
     }
 
     componentDidMount() {
-        const { questions, currentQuestion, nextQuestion, previousQuestion } = this.state;
-        this.displayQuestions(questions, currentQuestion, nextQuestion, previousQuestion);
+        const { questions, currentQuestion } = this.state;
+        this.displayQuestions(questions, currentQuestion);
         this.startTimer();
     }
 
@@ -46,13 +44,11 @@ class Play extends React.Component {
         clearInterval(this.interval);
     }
 
-    displayQuestions = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
+    displayQuestions = (questions = this.state.questions, currentQuestion) => {
         let { currentQuestionIndex } = this.state;
         if (!isEmpty(this.state.questions) && this.state.numberOfAnsweredQuestions < 15) {
             questions = this.state.questions;
             currentQuestion = questions[currentQuestionIndex];
-            nextQuestion = questions[currentQuestionIndex + 1];
-            previousQuestion = questions[currentQuestionIndex - 1];
             var trueAnswer = '';
             var answers = [];
 
@@ -74,8 +70,6 @@ class Play extends React.Component {
 
             this.setState({
                 currentQuestion,
-                nextQuestion,
-                previousQuestion,
                 numberOfQuestions: questions.length,
                 trueAnswer,
                 answers,
@@ -98,28 +92,6 @@ class Play extends React.Component {
         }
     }
 
-    handleNextButtonClick = () => {
-        this.playButtonSound();
-        if (this.state.nextQuestion !== undefined) {
-            this.setState(prevState => ({
-                currentQuestionIndex: prevState.currentQuestionIndex + 1
-            }), () => {
-                this.displayQuestions(this.state.state, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
-            });
-        }
-    };
-
-    handlePreviousButtonClick = () => {
-        this.playButtonSound();
-        if (this.state.previousQuestion !== undefined) {
-            this.setState(prevState => ({
-                currentQuestionIndex: prevState.currentQuestionIndex - 1
-            }), () => {
-                this.displayQuestions(this.state.state, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
-            });
-        }
-    };
-
     handleQuitButtonClick = () => {
         this.playButtonSound();
         if (window.confirm('Are you sure you want to quit?')) {
@@ -127,21 +99,21 @@ class Play extends React.Component {
         }
     };
 
-    handleButtonClick = (e) => {
-        switch (e.target.id) {
-            case 'next-button':
-                this.handleNextButtonClick();
-                break;
-            case 'previous-button':
-                this.handlePreviousButtonClick();
-                break;
-            case 'quit-button':
-                this.handleQuitButtonClick();
-                break;
-            default:
-                break;
-        }
-    }
+    // handleButtonClick = (e) => {
+    //     switch (e.target.id) {
+    //         case 'next-button':
+    //             this.handleNextButtonClick();
+    //             break;
+    //         case 'previous-button':
+    //             this.handlePreviousButtonClick();
+    //             break;
+    //         case 'quit-button':
+    //             this.handleQuitButtonClick();
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
     playButtonSound = () => {
         this.buttonSound.current.play();
@@ -160,7 +132,7 @@ class Play extends React.Component {
             numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1
         }), () => {
             this.checkUniqueQuestion();
-            this.displayQuestions(this.state.questions, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
+            this.displayQuestions(this.state.questions, this.state.currentQuestion);
         });
     }
 
@@ -177,18 +149,22 @@ class Play extends React.Component {
             numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1
         }), () => {
             this.checkUniqueQuestion();
-            this.displayQuestions(this.state.questions, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
+            this.displayQuestions(this.state.questions, this.state.currentQuestion);
         });
     }
 
     checkUniqueQuestion = () => {
         let { currentQuestionIndex, questionsAnsweredIndex } = this.state;
         let count = 0;
-        console.log(questionsAnsweredIndex);
-        if(questionsAnsweredIndex != null) {
+        console.log("Current question index: "+ currentQuestionIndex);
+        if(questionsAnsweredIndex != null && questionsAnsweredIndex!=0) {
+            console.log(questionsAnsweredIndex);
+            console.log("Current question index: "+ currentQuestionIndex);
             for (let i = 0; i < questionsAnsweredIndex.length; i++) {
                 if(questionsAnsweredIndex[i] == currentQuestionIndex) {
                     count++;
+                    console.log("count is: " + count);
+                    break;
                 }
             }
             if(count!=0) {
@@ -198,7 +174,7 @@ class Play extends React.Component {
                 questionsAnsweredIndex.push(currentQuestionIndex);
             }
         } else {
-            console.log(questionsAnsweredIndex);
+            console.log("this is the questionsAnsweredIndex: " + questionsAnsweredIndex);
             questionsAnsweredIndex.push(currentQuestionIndex);
         }
         
@@ -385,11 +361,11 @@ class Play extends React.Component {
                             <p onClick={this.handleOptionClick} className='option'>{answers[3]}</p>
                         </div>
 
-                        <div className='button-container'>
+                        {/* <div className='button-container'>
                             <button id="previous-button" onClick={this.handleButtonClick}>Previous</button>
                             <button id="next-button" onClick={this.handleButtonClick}>Next</button>
                             <button id="quit-button" onClick={this.handleButtonClick}>Quit</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </Fragment>

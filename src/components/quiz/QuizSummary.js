@@ -18,9 +18,19 @@ class QuizSummary extends Component {
 
     componentDidMount() {
         const { state } = this.props.location;
-        if(state) {
+        if(state && this.state.numberOfAnsweredQuestions!=0) {
             this.setState({
                 score: (state.score / state.numberOfAnsweredQuestions) * 100,
+                numberOfQuestions: state.numberOfQuestions,
+                numberOfAnsweredQuestions: state.numberOfAnsweredQuestions,
+                correctAnswers: state.correctAnswers,
+                wrongAnswers: state.wrongAnswers,
+                hintsUsed: state.hintsUsed,
+                fiftyFiftyUsed: state.fiftyFiftyUsed
+            });
+        } else {
+            this.setState({
+                score: 0,
                 numberOfQuestions: state.numberOfQuestions,
                 numberOfAnsweredQuestions: state.numberOfAnsweredQuestions,
                 correctAnswers: state.correctAnswers,
@@ -35,7 +45,6 @@ class QuizSummary extends Component {
         const { state } = this.props.location;
         let stats, remark;
         const userScore = this.state.score;
-
         if (userScore <= 50) {
             remark = 'You need more practice!';
         } else if(userScore > 50 && userScore <= 80) {
