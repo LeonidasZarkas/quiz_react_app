@@ -1,49 +1,44 @@
-// #register{
-//     background-image: url('../../assets/img/login_and_register_background.png');
-//     background-size: cover;
-//     background-position: 0%;
-//     display: flex;
-//     justify-content: space-around;
-//     height: 100vh;
-//     width: 100vw;
-// }
-
 #register{
-
-
-    background-image: url('../../assets/img/login_and_register_background.png');
-
-        justify-content: space-around ;
-        display: flex;
-        
-
+    background-image: url('../../assets/img/home-page-background_blur.png');
+    justify-content: space-around ;
+    display: flex;    
     height: 100vh;
     width: 100vw;
-}
 
-#info{
-    margin-top: 60%;
-    padding-left: 3%;
-    padding-right: 3%;
-    background-color: rgb(255, 255, 255);
+    #info{
+        font-size: 1.40rem;
+        margin-top: 60%;
+        padding-left: 3%;
+        padding-right: 3%;
+        padding: $lg;
+        background-color: rgb(255, 255, 255);
+        border-radius: $button-radius;
+        border-left: 2px solid black;
+        border-top: 2px solid black;
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+    }
 
-    border-left: 2px solid black;
-    border-top: 2px solid black;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-}
+    .form {
+        font-size: 1.0rem;
+    }
 
-p{
-    font-style: italic;
-    text-decoration: underline;
-    text-align: center;
-}
+    label {
+        font-size: large!important;
+        width: 150px;
+        }
 
-#info label{
-    font-size: 3mm;
-    color: rgb(0, 0, 0);
-}
+    p{
+        font-style: italic;
+        font-weight: bold;
+        font-size: large!important;
+        text-decoration: underline;
+        text-align: center;
+    }
 
-#lobby_btn{
-    text-align: right;
+    #lobby_btn{
+        font-size: large!important;
+        text-align: right;
+        padding-top: $sm;
+    }
 }

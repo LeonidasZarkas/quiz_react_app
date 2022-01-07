@@ -9,13 +9,7 @@
 }
 
 .questions {
-    // background-image: url('../../assets/img/home-page-background_4.png');
-    // border-left: 3px solid blue;
-    // border-top: 3px solid red;
-    // border-right: 3px solid green;
-    // border-bottom: 3px solid palevioletred;
     width: 25cm;
-    // height: 15cm;
     margin: $lg auto 0 auto;
     padding: $sm $md;
 
@@ -30,7 +24,8 @@
         border-top: 3px solid black;
         border-right: 3px solid black;
         border-bottom: 3px solid black;
-        background-color: rgb(0, 204, 0);
+        background-color: lightgreen;
+        border-radius: $button-radius;
         display: flex;
         justify-content: space-evenly;
         margin-left: 70mm;
@@ -59,8 +54,10 @@
         border-top: 3px solid black;
         border-right: 3px solid black;
         border-bottom: 3px solid black;
+        border-radius: $button-radius;
         margin-left: 65mm;
         margin-right: 65mm;
+        padding: $normal;
         font-style: italic;
         text-decoration: underline;
         font-size: 1.65rem;
@@ -79,7 +76,7 @@
         border-left: 3px solid black;
         border-top: 3px solid black;
         border-right: 3px solid black;
-        border-bottom: 3px solid black;
+        border-bottom: 3px solid black;   
         background-color: $answersblue;
         border-radius: $button-radius;
         color: white;
@@ -100,14 +97,18 @@
         border-top: 3px solid black;
         border-right: 3px solid black;
         border-bottom: 3px solid black;
-        background-color: yellow;
+        border-radius: $button-radius;
+        width: 7%;
+        background-color: rgb(253, 253, 103);
     }
     .timer-container .right{
         border-left: 3px solid black;
         border-top: 3px solid black;
         border-right: 3px solid black;
         border-bottom: 3px solid black;
-        background-color: yellow;
+        border-radius: $button-radius;
+        width: 8%;
+        background-color: rgb(253, 253, 103);
     }
 }
 

@@ -12,6 +12,9 @@ const QuizInstructions = () => (
         <Fragment>
             <Helmet><title>Quiz App - Instructions</title></Helmet>
             <div className='instructions container'>
+                <div className="take-away-buttons">
+                    <span className='left'><Link to="/play/quiz">Skip</Link></span>
+                </div>
                 <h1>How to Play the Game</h1>
                 <p>Ensure you read this guide from start to finish.</p>
                 <ul className='browser-default' id='main-list'>
@@ -50,7 +53,7 @@ const QuizInstructions = () => (
                     <li>The timer starts as soon as the game loads</li>
                     <li> Let's do this if you think you've got what it takes?</li>
                 </ul>
-                <div>
+                <div className="take-away-buttons">
                     <span className='left'><Link to="/">No take me back</Link></span>
                     <span className='right'><Link to="/play/quiz">Okay, Let's do this!</Link></span>
                 </div>

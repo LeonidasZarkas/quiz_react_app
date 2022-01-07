@@ -110,7 +110,7 @@ const Login = (props) => {
               {loading && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
-              <span>Login</span>
+              <span className="login">Login</span>
             </button>
 
             <div id="lobby_btn">
