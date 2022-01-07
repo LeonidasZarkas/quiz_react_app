@@ -178,13 +178,17 @@ class Play extends React.Component {
             for (let i = 0; i < questionsAnsweredIndex.length; i++) {
                 if(questionsAnsweredIndex[i] == currentQuestionIndex) {
                     count++;
-                    console.log("count is: " + count);
                     break;
                 }
             }
             if(count!=0) {
-                currentQuestionIndex = Math.floor(Math.random() * 339);
-                this.checkUniqueQuestion();
+                this.setState(prevState => ({
+                    currentQuestionIndex: Math.floor(Math.random() * 339),
+                },() => {
+                    this.checkUniqueQuestion();
+                }));
+
+                
             } else {
                 questionsAnsweredIndex.push(currentQuestionIndex);
             }
@@ -193,7 +197,7 @@ class Play extends React.Component {
         }
         
         this.setState({
-            currentQuestionIndex,
+            currentQuestionIndex: currentQuestionIndex,
             questionsAnsweredIndex
         });
 

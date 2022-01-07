@@ -18,7 +18,7 @@ class QuizSummary extends Component {
 
     componentDidMount() {
         const { state } = this.props.location;
-        if(state && this.state.numberOfAnsweredQuestions!=0) {
+        if(state && state.numberOfAnsweredQuestions!=0) {
             this.setState({
                 score: (state.score / state.numberOfAnsweredQuestions) * 100,
                 numberOfQuestions: state.numberOfQuestions,
@@ -28,7 +28,8 @@ class QuizSummary extends Component {
                 hintsUsed: state.hintsUsed,
                 fiftyFiftyUsed: state.fiftyFiftyUsed
             });
-        } else {
+        } else if(state){
+            console.log(state.numberOfAnsweredQuestions)
             this.setState({
                 score: 0,
                 numberOfQuestions: state.numberOfQuestions,
