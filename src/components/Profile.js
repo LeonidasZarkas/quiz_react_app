@@ -10,10 +10,10 @@ const Profile = () => {
 
   return (
     <div id="profile_page">
-      <div id="title">
+      <div className="profile-info">
         <header>
           <h3>
-            <strong>{currentUser.username}</strong>
+            {currentUser.username}
           </h3>
         </header>
 
@@ -23,15 +23,12 @@ const Profile = () => {
         <p>
           <strong>Email:</strong> {currentUser.email}
         </p>
-
-        <br/><br/><br/><br/><br/><br/>
-        <Link to={"/play/instructions"} className="buttons" id="play-button">Play</Link>
-        <Link to={"/home"} className="buttons" id="logout-button" onClick={logOut}>Log Out</Link> 
-        <br/><br/>
-        
+        <div className="bottom-buttons">
+          <span className='left'><Link to={"/play/instructions"} className="play-button">Play</Link></span>
+          <span className='right'><Link to={"/home"} onClick={logOut} className="logout-button">Log Out</Link></span>  
+        </div>
 
       </div>
-
     </div>
   );
 };

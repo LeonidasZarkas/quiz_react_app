@@ -59,7 +59,6 @@
         margin-right: 65mm;
         padding: $normal;
         font-style: italic;
-        text-decoration: underline;
         font-size: 1.65rem;
         font-weight: 1000;
         margin-bottom: $lg;
@@ -98,7 +97,8 @@
         border-right: 3px solid black;
         border-bottom: 3px solid black;
         border-radius: $button-radius;
-        width: 7%;
+        padding-left: 10px;
+        width: 9%;
         background-color: rgb(253, 253, 103);
     }
     .timer-container .right{
@@ -107,7 +107,8 @@
         border-right: 3px solid black;
         border-bottom: 3px solid black;
         border-radius: $button-radius;
-        width: 8%;
+        padding-left: 10px;
+        width: 9%;
         background-color: rgb(253, 253, 103);
     }
 }
