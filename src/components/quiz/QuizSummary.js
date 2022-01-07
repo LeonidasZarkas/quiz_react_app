@@ -83,7 +83,7 @@ class QuizSummary extends Component {
                     <section>
                         <ul>
                             <li>
-                                <Link to="/">Back to Home</Link>
+                                <Link to="/profile">Back to My Profile</Link>
                             </li>
                             <li>
                                 <Link to="/play/quiz">Play Again</Link>
@@ -99,7 +99,7 @@ class QuizSummary extends Component {
                 <section>
                     <ul>
                         <li>
-                            <Link to="/">Back to Home</Link>
+                            <Link to="/">Home</Link>
                         </li>
                         <li>
                             <Link to="/play/quiz">Take a Quiz</Link>

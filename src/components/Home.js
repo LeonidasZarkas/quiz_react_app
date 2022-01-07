@@ -7,6 +7,7 @@ import UserService from "../services/user.service";
 
 const Home = () => {
   const [content, setContent] = useState("");
+  const currentUser = AuthService.getCurrentUser();
 
   useEffect(() => {
     UserService.getPublicContent().then(
@@ -34,7 +35,7 @@ const Home = () => {
           <br/><br/><br/><br/>
           <div className="play-button-container">
             <ul>
-              <li><Link className="play-button" to={"/play/instructions"}>Play</Link></li>
+              <li><Link className="play-button" to={"/play/instructions"}>Just Play!</Link></li>
             </ul>
           </div>
           <div className="auth-container">

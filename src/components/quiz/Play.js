@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 import M from 'materialize-css';
-
+import AuthService from "../../services/auth.service";
 import questions from '../../questions.json';
 import isEmpty from '../../utils/is-empty';
 import correctAnswerSound from '../../assets/audio/Correct-Sound.mp3';
@@ -12,6 +13,7 @@ class Play extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUser: AuthService.getCurrentUser(),
             questions,
             currentQuestion: {},
             trueAnswer: '',
@@ -355,8 +357,13 @@ class Play extends React.Component {
             answers,
             hints,
             fiftyFifty,
-            time
+            time,
+            currentUser
         } = this.state;
+
+        const logOut = () => {
+            AuthService.logout();
+          };
 
         return (
             <Fragment>
@@ -368,6 +375,12 @@ class Play extends React.Component {
                 </Fragment>
                 <div id="play">
                     <div className='questions'>
+                    {currentUser && (
+                        <div className="user-buttons">
+                            <span className='left'><Link to={"/profile"} className="profile-button">My Profile</Link></span>
+                            <span className='right'><Link to={"/home"} onClick={logOut} className="logout-button">Logout</Link></span>
+                        </div>
+                    )}
                         <h2>LET'S PLAY !</h2>
                         <div className='lifeline-container'>
                             <p>
