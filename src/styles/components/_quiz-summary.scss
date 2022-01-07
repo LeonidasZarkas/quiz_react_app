@@ -63,21 +63,38 @@
     section ul li:first-child:hover {
         background-color: $answersblue;
     }
+    
+    section ul li:nth-child(2) {
+        border: 1px solid maroon;
+        margin-right: $sm;
+        transition: 0.3s linear all;
+    }
 
-    section ul li:last-child {
+    section ul li:nth-child(2):hover {
+        background-color: maroon;
+    }
+
+    section ul li:nth-child(3) {
         border: 1px solid green;
         transition: 0.3s linear all;
     }
 
-    section ul li:last-child:hover {
+    section ul li:nth-child(3):hover {
         background-color: green;
     }
 
-    section ul li:last-child a {
+    section ul li:nth-child(3) a {
         color: green;
     }
 
-    section ul li:last-child a:hover {
+    section ul li:nth-child(3) a:hover {
+        color: $off-white;
+    }
+    section ul li:nth-child(2) a {
+        color: maroon;
+    }
+
+    section ul li:nth-child(2) a:hover {
         color: $off-white;
     }
 

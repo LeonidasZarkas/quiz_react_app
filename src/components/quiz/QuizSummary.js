@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { Helmet } from 'react-helmet';
 import { Link } from "react-router-dom";
+import AuthService from "../../services/auth.service";
 
 class QuizSummary extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUser: AuthService.getCurrentUser(),
             score: 0,
             numberOfQuestions: 0,
             numberOfAnsweredQuestions: 0,
@@ -20,6 +22,7 @@ class QuizSummary extends Component {
         const { state } = this.props.location;
         if(state && state.numberOfAnsweredQuestions!=0) {
             this.setState({
+                currentUser: AuthService.getCurrentUser(),
                 score: (state.score / state.numberOfAnsweredQuestions) * 100,
                 numberOfQuestions: state.numberOfQuestions,
                 numberOfAnsweredQuestions: state.numberOfAnsweredQuestions,
@@ -44,6 +47,13 @@ class QuizSummary extends Component {
     }
     render() {
         const { state } = this.props.location;
+
+        const { currentUser } = this.state;
+
+        const logOut = () => {
+            AuthService.logout();
+          };
+
         let stats, remark;
         const userScore = this.state.score;
         if (userScore <= 50) {
@@ -83,8 +93,13 @@ class QuizSummary extends Component {
                     <section>
                         <ul>
                             <li>
+                                <Link to="/home" >Home</Link>
+                            </li>
+                        {currentUser && (
+                            <li>
                                 <Link to="/profile">Back to My Profile</Link>
                             </li>
+                        )}
                             <li>
                                 <Link to="/play/quiz">Play Again</Link>
                             </li>

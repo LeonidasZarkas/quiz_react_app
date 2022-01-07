@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet';
-
+import AuthService from "../../services/auth.service";
 import options from '../../assets/img/instructions_options.png';
 import answer from '../../assets/img/instructions_answer.png';
 import fifty from '../../assets/img/instructions_50-50.png';
