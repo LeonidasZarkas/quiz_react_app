@@ -18,9 +18,10 @@ class Play extends React.Component {
             previousQuestion: {},
             trueAnswer: '',
             answers: [],
+            questionsAnsweredIndex: [],
             numberOfQuestions: 0,
             numberOfAnsweredQuestions: 0,
-            currentQuestionIndex: 0,
+            currentQuestionIndex: Math.floor(Math.random() * 339),
             score: 0,
             correctAnswers: 0,
             wrongAnswers: 0,
@@ -47,7 +48,7 @@ class Play extends React.Component {
 
     displayQuestions = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
         let { currentQuestionIndex } = this.state;
-        if (!isEmpty(this.state.questions)) {
+        if (!isEmpty(this.state.questions) && this.state.numberOfAnsweredQuestions < 15) {
             questions = this.state.questions;
             currentQuestion = questions[currentQuestionIndex];
             nextQuestion = questions[currentQuestionIndex + 1];
@@ -82,6 +83,8 @@ class Play extends React.Component {
             }, () => {
                 this.showOptions();
             });
+        } else {
+            this.endGame();
         }
     };
 
@@ -153,10 +156,10 @@ class Play extends React.Component {
         this.setState(prevState => ({
             score: prevState.score + 1,
             correctAnswers: prevState.correctAnswers + 1,
-            currentQuestionIndex: prevState.currentQuestionIndex + 1,
+            currentQuestionIndex: Math.floor(Math.random() * 339),
             numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1
         }), () => {
-
+            this.checkUniqueQuestion();
             this.displayQuestions(this.state.questions, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
         });
     }
@@ -170,11 +173,40 @@ class Play extends React.Component {
         });
         this.setState(prevState => ({
             wrongAnswers: prevState.wrongAnswers + 1,
-            currentQuestionIndex: prevState.currentQuestionIndex + 1,
+            currentQuestionIndex: Math.floor(Math.random() * 339),
             numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1
         }), () => {
+            this.checkUniqueQuestion();
             this.displayQuestions(this.state.questions, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
         });
+    }
+
+    checkUniqueQuestion = () => {
+        let { currentQuestionIndex, questionsAnsweredIndex } = this.state;
+        let count = 0;
+        console.log(questionsAnsweredIndex);
+        if(questionsAnsweredIndex != null) {
+            for (let i = 0; i < questionsAnsweredIndex.length; i++) {
+                if(questionsAnsweredIndex[i] == currentQuestionIndex) {
+                    count++;
+                }
+            }
+            if(count!=0) {
+                currentQuestionIndex = Math.floor(Math.random() * 339);
+                this.checkUniqueQuestion();
+            } else {
+                questionsAnsweredIndex.push(currentQuestionIndex);
+            }
+        } else {
+            console.log(questionsAnsweredIndex);
+            questionsAnsweredIndex.push(currentQuestionIndex);
+        }
+        
+        this.setState({
+            currentQuestionIndex,
+            questionsAnsweredIndex
+        });
+
     }
 
     showOptions = () => {
@@ -309,7 +341,7 @@ class Play extends React.Component {
         const {
             currentQuestion,
             currentQuestionIndex,
-            numberOfQuestions,
+            numberOfAnsweredQuestions,
             answers,
             hints,
             fiftyFifty,
@@ -339,7 +371,7 @@ class Play extends React.Component {
                         </div>
                         <div className='timer-container'>
                             <p>
-                                <span className='left'>{currentQuestionIndex + 1} of {numberOfQuestions}</span>
+                                <span className='left'>{numberOfAnsweredQuestions} of 15</span>
                                 <span className='right'>{time.minutes}:{time.seconds}<span className='mdi mdi-clock-outline mdi-24px'></span></span>
                             </p>
                         </div>
