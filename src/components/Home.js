@@ -30,9 +30,6 @@ const Home = () => {
       <Helmet><title>Quiz App - Home</title></Helmet>
       <div id="home">
         <section>
-          {/* <div style={{ textAlign: 'center' }}>
-            <span className="mdi mdi-cube-outline cube"></span>
-          </div> */}
           <h1> Quiz Master </h1>
           <br/><br/><br/><br/>
           <div className="play-button-container">
