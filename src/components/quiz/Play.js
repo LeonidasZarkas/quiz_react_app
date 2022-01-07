@@ -133,6 +133,15 @@ class Play extends React.Component {
         }), () => {
             this.checkUniqueQuestion();
             this.displayQuestions(this.state.questions, this.state.currentQuestion);
+            clearInterval(this.interval);
+                this.setState({
+                    time: {
+                        minutes: 0,
+                        seconds: 0
+                    }
+                }, () => {
+                    this.startTimer();
+                });
         });
     }
 
@@ -150,16 +159,22 @@ class Play extends React.Component {
         }), () => {
             this.checkUniqueQuestion();
             this.displayQuestions(this.state.questions, this.state.currentQuestion);
+            clearInterval(this.interval);
+                this.setState({
+                    time: {
+                        minutes: 0,
+                        seconds: 0
+                    }
+                }, () => {
+                    this.startTimer();
+                });
         });
     }
 
     checkUniqueQuestion = () => {
         let { currentQuestionIndex, questionsAnsweredIndex } = this.state;
         let count = 0;
-        console.log("Current question index: "+ currentQuestionIndex);
         if(questionsAnsweredIndex != null && questionsAnsweredIndex!=0) {
-            console.log(questionsAnsweredIndex);
-            console.log("Current question index: "+ currentQuestionIndex);
             for (let i = 0; i < questionsAnsweredIndex.length; i++) {
                 if(questionsAnsweredIndex[i] == currentQuestionIndex) {
                     count++;
@@ -174,7 +189,6 @@ class Play extends React.Component {
                 questionsAnsweredIndex.push(currentQuestionIndex);
             }
         } else {
-            console.log("this is the questionsAnsweredIndex: " + questionsAnsweredIndex);
             questionsAnsweredIndex.push(currentQuestionIndex);
         }
         
@@ -267,7 +281,7 @@ class Play extends React.Component {
     }
 
     startTimer = () => {
-        const countDownTime = Date.now() + 50000;
+        const countDownTime = Date.now() + 10000;
         this.interval = setInterval(() => {
             const now = new Date();
             const distance = countDownTime - now;
@@ -275,7 +289,7 @@ class Play extends React.Component {
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / (1000));
 
-            if (distance < 0) {
+            if (distance < 0 && this.state.numberOfAnsweredQuestions == 15) {
                 clearInterval(this.interval);
                 this.setState({
                     time: {
@@ -285,6 +299,22 @@ class Play extends React.Component {
                 }, () => {
                     this.endGame();
                 });
+            } else if(distance < 0) {
+                clearInterval(this.interval);
+                this.setState(prevState => ({
+                    wrongAnswers: prevState.wrongAnswers + 1,
+                    currentQuestionIndex: Math.floor(Math.random() * 339),
+                    numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1,
+                    time: {
+                        minutes: 0,
+                        seconds: 0
+                    }
+                }), () => {
+                        this.checkUniqueQuestion();
+                        this.displayQuestions(this.state.questions, this.state.currentQuestion);
+                        this.startTimer();
+                    });
+                    
             } else {
                 this.setState({
                     time: {
